@@ -1,0 +1,17 @@
+<%if channel.present?%>
+  <div class="row filterDiscussions all read single">
+    <div class="col-2">
+      <i class="material-icons">lock</i>
+    </div>
+    <div class="col-8">
+      <%= link_to channel&.channel_name, channel, id: "channel_#{channel.id}_#{@current_user&.id}", data: { channel_id: channel.id, user_id: @current_user&.id } %>
+    </div>
+    <% msg_count = channel.messages.where('created_at > ? AND user_id != ?', channel.last_read[current_user.id.to_s]&.to_time, current_user.id).count %>
+
+    <%= turbo_stream_from "broadcast_#{channel.id}_#{current_user.id}" %>
+    <div class="col-1">
+      <%= render partial: 'partials/message_count', locals: { channel: channel, msg_count: } %>
+    </div>
+  </div>
+
+<%end%>

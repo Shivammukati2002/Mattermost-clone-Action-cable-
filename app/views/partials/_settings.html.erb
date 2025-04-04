@@ -1,0 +1,59 @@
+<div class="tab-pane fade" id="settings">			
+	<div class="settings">
+		<div class="categories" id="accordionSettings">
+			<h1>Settings</h1>
+			<!-- Start of My Account -->
+			<div class="category">
+				<a href="#" class="title collapsed" id="headingOne">
+					<i class="material-icons md-30 online">person_outline</i>
+					<div class="data">
+						<h5>My Account</h5>
+						<p>Update your profile details</p>
+					</div>
+				</a>
+				<div class="collapse" style="display: block !important;">
+					<div class="content">
+						<div class="upload">
+							<div class="data">
+                <div class='avatar-xl' style="background: #99ccff;color: white;" ><span style="font-size: 30px;" class="p-2"><%= @current_user.username.upcase[0..1]%></span></div>
+								<label>
+									<input type="file">
+									<span class="btn button">Upload avatar</span>
+								</label>
+							</div>
+							<p>For best results, use an image at least 256px by 256px in either .jpg or .png format!</p>
+						</div>
+						<form>
+							<div class="field">
+								<label for="firstName">Username <span>*</span></label>
+								<input type="text" class="form-control" id="firstName" placeholder="Username" value="Michael" required>
+							</div>
+							<div class="field">
+								<label for="email">Email <span>*</span></label>
+								<input type="email" class="form-control" id="email" placeholder="Enter your email address" value="michael@gmail.com" required>
+							</div>
+							<div class="field">
+								<label for="password">Password</label>
+								<input type="password" class="form-control" id="password" placeholder="Enter a new password" value="password" required>
+							</div>
+							<button type="submit" class="btn button w-100">Apply</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- End of My Account -->
+			<!-- Start of Logout -->
+			<div class="category">
+				<%= button_to "sign_in", root_path, class: "title collapsed" %>
+					<i class="material-icons md-30 online">power_settings_new</i>
+					<div class="data">
+						<h5>Power Off</h5>
+						<p>Log out of your account</p>
+					</div>
+					<i class="material-icons">keyboard_arrow_right</i>
+				</a>
+			</div>
+			<!-- End of Logout -->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,134 @@
+<style>.dropdown-toggle::after{ display: none !important;  }</style>
+<main>
+	<div class="layout row">
+		<!-- Start of Sidebar -->
+		<div class="sidebar col-3 ml-5" id="sidebar">
+			<div class="container">
+				<div class="col-md-12">
+					<div class="tab-content">
+
+						<!-- Start of Discussions -->
+						<div id="discussions" class="tab-pane fade active show">
+
+              <!-- Start of user info -->
+              <div class="discussions mb-4">
+                <div class="row" style="margin-bottom: 2%;">
+                  <div class="col-2 d-flex justify-content-center" >
+                    <div class='avatar-md d-flex justify-content-center' style="background: #99ccff;color: white;" >
+                      <% if current_user.profile_image.attached? %>
+                        <%= image_tag url_for(current_user.profile_image), style: "width: 100%; height: 100%; object-fit: cover; border-radius: 100%" %>
+                      <% else %>
+                        <span style="font-size: 1.5em; padding: 0.2em">
+                          <%= @current_user.username.upcase[0..1] %>
+                        </span>
+                      <% end %>
+                    </div>  
+                  </div>
+                  <div class="col-7" style="top: 14px;">
+                    <h5><%= @current_user.username %></h5>
+                  </div>
+                  <div class="col-3 dropdown" style="top: 6px;">
+                    <button class="btn dropdown-toggle btn-primary" style="color: #808080;" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">menu</i></button>
+                    <div class="dropdown-menu bg-primary" aria-labelledby="dropdownMenuButton">
+
+                      <%= link_to edit_user_path(@current_user.id), class: "btn power dropdown-item", remote: true do %>
+                        <i class="material-icons">settings</i>
+                        <span> Edit profile </span>
+                      <% end %>
+
+                      <%= button_to login_path(@current_user), method: :delete, class: "btn power dropdown-item", remote: true do %>
+                        <i class="material-icons">power_settings_new</i>
+                        <span> Logout </span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>                  
+              </div>
+              <!-- End of user info -->
+
+              <!-- Start of Favourite channels -->
+              <div class="discussions" style="margin-bottom: 7%;">
+                <div class="row">
+                  <div class="col-9">
+                    <h5>FAVORITE CHANNELS</h5>
+                    <div class="row">
+                      <div class="col-2">
+                        <i class="material-icons">person</i>
+                      </div>
+                      <div class="col-10">
+                        <h6><%= button_to "#{@current_user.username}(you)", channels_path, method: :post, params: {is_private: true }, style: "background: none;border: none;color: grey;font-weight: bolder;" %></h6>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+              <!-- End of Favourite channels -->
+
+              <!-- Start of private channels -->
+              <div class="discussions">
+                <div class="row">
+                  <div class="col-9">
+                    <h5>PRIVATE CHANNELS</h5>
+                  </div>
+                  <div class="col-3">
+                    <button class="btn" style="color: #808080;" data-toggle="modal" data-target="#add_private_channel"><i class="material-icons">add</i></button>
+                  </div>
+                </div> 
+                  <div class="list-group chats" role="tablist" id="channels">
+                    <%= render @channels, locals: { current_user: @current_user }%> 
+                  </div> 
+              </div>
+
+              <!-- End of private channels -->
+
+              <!-- Start of direct messages -->
+              <div class="discussions">
+                <div class="row">
+                  <div class="col-9">
+                    <h5>DIRECT MESSAGES</h5>
+                  </div>
+                  <div class="col-3">
+                    <button class="btn" style="color: #808080;" data-toggle="modal" data-target="#direct_message"><i class="material-icons">add</i></button>
+                  </div>
+                </div>
+                <%= turbo_stream_from "direct_messages#{@current_user.id}" %>
+                <div class="list-group chats" role="tablist" id="direct_messages_list">
+                  <%= render partial: 'partials/direct_message', collection: @direct_messages, locals: { current_user: @current_user, user: @current_user } %>
+                </div>                  
+              </div>
+              <!-- End of direct messages -->
+						</div>
+						<!-- End of Discussions -->
+						<!-- Start of Settings -->
+							<%= render 'partials/settings'%>
+						<!-- End of Settings -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+    <%= turbo_stream_from "notification_#{@current_user.id}" do %>
+      <%= render 'partials/notification'%>
+    <%end%>   
+
+    <%= turbo_stream_from "add_remove_channels_#{@current_user.id}" do %>
+      <%= render 'partials/add_remove_channel'%>
+    <%end%>      
+		<!-- Start Show messages -->
+			<%= render 'partials/show_messages' %>
+		<!-- End Show messages -->
+
+		<!-- End of Sidebar -->
+
+		<!-- Start of Create Chat -->
+			<%= render 'modals/create_channel' %>
+			<%= render 'modals/group_members' %>
+		<!-- End of Create Chat -->
+	</div> <!-- Layout -->
+</main>
+<!-- core JavaScript -->
+<script>
+	function scrollToBottom(el) { el.scrollTop = el.scrollHeight; }
+	scrollToBottom(document.getElementById('content'));
+</script>
+

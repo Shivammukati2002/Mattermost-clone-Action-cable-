@@ -1,0 +1,30 @@
+<div class="message cont-<%= message.user.id %>">
+
+  <div class='avatar-md' style="background: #99ccff;color: white;" ><span style="margin-left: 15%; margin-right: 15%;font-size: 25px;margin-top: 10%;"><%= message.user.username.upcase[0..1]%></span></div>  
+  <div class="text-main">
+      <div class="text-group cont-<%= message.user.id %>">
+        <div class="text cont-<%= message.user.id %>">
+          <%if message.attachments.attached?%>
+            <div class="row mb-3">
+              <%message.attachments.each do |file|%>
+                <div class="col-6 mb-3">
+                  <% if file.representable? %>
+                    <%= link_to rails_blob_path(file, disposition: "attachment") do %>
+                      <%= image_tag url_for(file), style: "width: 200px; height:200px" %>
+                    <% end %>
+                    <%= file.filename.to_s%>
+                  <% else %>
+                    <%= link_to rails_blob_path(file, disposition: "attachment") do %>
+                      <%= image_tag "file.jpg", alt: "Download file", style: "width: 50px; height: 50px;" %>
+                    <% end %>
+                    <%= file.filename.to_s%>
+                  <% end %>
+                </div>
+              <%end%>
+            </div>
+          <%end%>
+          <p><%= message.content %></p>
+        </div>
+      </div>
+      <span><%= message.user.username %> &nbsp &nbsp <%= message.created_at.localtime.strftime("%I:%M%p")%></span>    </div>
+</div>

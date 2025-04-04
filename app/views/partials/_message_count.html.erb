@@ -1,0 +1,5 @@
+<%unless msg_count == 0%>
+	<span class="badge badge-primary badge-pill" id="broadcast_<%=channel.id%>_<%=current_user.id%>"><%=msg_count%></span>
+<%else%>
+	<span id="broadcast_<%=channel.id%>_<%=current_user.id%>"></span>
+<%end%>
