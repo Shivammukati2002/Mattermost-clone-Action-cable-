@@ -6,17 +6,15 @@ development:
   username: postgres
   password: postgres
   host: localhost
-# test:
-#   adapter: postgresql
-#   database: my_database_test
-#   pool: 5
-#   timeout: 5000
+  
+test:
+  adapter: postgresql
+  database: my_database_test
+  pool: 5
+  timeout: 5000
 
-# production:
-#   adapter: postgresql
-#   encoding: unicode
-#   pool: 5
-#   host: localhost
-#   database: chatdb
-#   username: postgres
-#   password: chatDb
+production:
+  <<: *default
+  database: my_database_production
+  username: my_database_development
+  password: <%= ENV["MYSITE_DATABASE_PASSWORD"] %>
