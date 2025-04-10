@@ -36,3 +36,6 @@
 .byebug_history
 *.mkv
 
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
