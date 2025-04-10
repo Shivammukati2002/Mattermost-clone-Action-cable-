@@ -3,9 +3,6 @@ development:
   encoding: unicode
   database: my_database_development
   pool: 5
-  username: postgres
-  password: postgres
-  host: localhost
   
 test:
   adapter: postgresql
